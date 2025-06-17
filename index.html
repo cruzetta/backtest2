@@ -435,7 +435,10 @@
         // --- FUNÇÕES DE IA (GEMINI API) ---
         
         async function callGeminiAPI(prompt, isJson = false) {
-            const apiKey = ""; // Deixe em branco
+            // --- INÍCIO DA CORREÇÃO: Chave de API inserida ---
+            const apiKey = "AIzaSyDaPmVKULxwIEyoV345gPznnjMPesUbekY"; 
+            // --- FIM DA CORREÇÃO ---
+            
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
             
             const payload = {
@@ -482,7 +485,7 @@
                 }
             } catch (error) {
                 console.error("Erro na chamada da API Gemini:", error);
-                throw error; // Re-lança o erro para ser tratado pela função que chamou
+                throw error;
             }
         }
 
@@ -495,7 +498,6 @@
             ui.optimizeSmaBtn.disabled = true;
 
             const last30Closes = mappedData.slice(-30).map(d => d.close);
-            const priceRange = Math.max(...last30Closes) - Math.min(...last30Closes);
             
             const prompt = `Para uma estratégia de trading de cruzamento de média móvel num ativo de commodity (boi gordo), e considerando os preços de fecho recentes e uma volatilidade moderada, sugira um único número inteiro para o período da média móvel que equilibre bem a capacidade de resposta a novas tendências sem ser excessivamente sensível a pequenas flutuações. Responda apenas com o número. Exemplo: 21`;
 
@@ -545,8 +547,8 @@ ${lastDataString}`;
                     let lastDate = new Date(mappedData[mappedData.length - 1].date);
                     newOhlcData.forEach(day => {
                         lastDate.setDate(lastDate.getDate() + 1);
-                        if(lastDate.getDay() === 0) lastDate.setDate(lastDate.getDate() + 1); // Pula Domingo
-                        if(lastDate.getDay() === 6) lastDate.setDate(lastDate.getDate() + 2); // Pula Sábado
+                        if(lastDate.getDay() === 0) lastDate.setDate(lastDate.getDate() + 1);
+                        if(lastDate.getDay() === 6) lastDate.setDate(lastDate.getDate() + 2);
 
                         mappedData.push({
                             date: new Date(lastDate),
@@ -559,7 +561,7 @@ ${lastDataString}`;
                     
                     renderEditableTable();
                     showStatusMessage(`✨ Cenário de ${scenarioText} adicionado! Execute o backtest para ver os resultados.`);
-                    ui.runBacktestBtn.click(); // Roda o backtest automaticamente
+                    ui.runBacktestBtn.click();
 
                 } catch(error) {
                     showStatusMessage(`Erro ao gerar cenário: ${error.message}`, true);
